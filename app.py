@@ -16,7 +16,7 @@ st.markdown(
     """
 )
 
-# Input fields
+# User inputs
 url = st.text_input("YouTube Link", help="Example: https://www.youtube.com/watch?v=...")
 start_time = st.number_input("Start Time (seconds)", min_value=0, step=1, help="Clip start time in seconds")
 end_time = st.number_input("End Time (seconds)", min_value=0, step=1, help="Clip end time in seconds")
@@ -30,7 +30,7 @@ if end_time and start_time:
     elif clip_length > 30:
         st.error("Clip length exceeds 30 seconds limit.")
 
-# Download and process button
+# Button to trigger download and processing
 if st.button("Download and Create GIF"):
     if not url:
         st.error("Please enter a YouTube URL.")
@@ -39,9 +39,9 @@ if st.button("Download and Create GIF"):
     else:
         try:
             with st.spinner("Downloading video from YouTube..."):
-                # Define yt-dlp options
+                # yt-dlp options: single combined stream, no merging
                 ydl_opts = {
-                    'format': f'bestvideo[height<={resolution[:-1]}]+bestaudio/best[height<={resolution[:-1]}]/best',
+                    'format': f'best[height<={resolution[:-1]}]',
                     'outtmpl': 'video.mp4',
                     'quiet': True,
                     'noplaylist': True
